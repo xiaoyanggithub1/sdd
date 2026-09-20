@@ -176,7 +176,7 @@ main {
   z-index: 1;
   width: min(1080px, calc(100% - 28px));
   margin: 0 auto;
-  padding: 18px 0 calc(var(--player-h) + var(--tab-h) + var(--safe-bottom) + 28px);
+  padding: 12px 0 calc(var(--player-h) + var(--tab-h) + var(--safe-bottom) + 40px);
 }
 
 .page { display: none; animation: rise .45s ease; }
@@ -230,12 +230,12 @@ main {
   border: 1px solid rgba(255,255,255,.8);
 }
 
-.letter-card, .stack-card { padding: 22px; }
+.letter-card, .stack-card { padding: 18px; }
 .letter-card h2, .stack-card h2 { font-family: "ZCOOL XiaoWei", serif; margin-top: 0; }
 .letter-card p { line-height: 1.9; color: #6b5360; }
 .letter-card .sign { text-align: right; font-family: "Ma Shan Zheng", cursive; font-size: 22px; color: var(--rose-deep); }
 
-.mini-stack { position: relative; height: 210px; margin: 12px 0; }
+.mini-stack { position: relative; height: 188px; margin: 8px 0 12px; }
 .mini-stack img {
   position: absolute;
   left: 50%;
@@ -264,8 +264,7 @@ main {
 }
 .shortcut {
   text-align: left;
-  padding: 18px;
-  min-height: 118px;
+  padding: 14px 16px;
 }
 .shortcut span { font-size: 22px; }
 .shortcut strong { display: block; margin: 8px 0 4px; }
