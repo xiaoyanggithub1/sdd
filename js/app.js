@@ -24,7 +24,7 @@
     { src: "assets/photos/02-night.png", caption: "夜色里的你" },
     { src: "assets/photos/03-home.png", caption: "家里的笑容" },
     { src: "assets/photos/04-mountain.png", caption: "山风轻轻经过" },
-    { src: "assets/photos/05-dance.png", caption: "开心到举手" },
+    { src: "assets/photos/05-dance.png", caption: "开心的热舞" },
     { src: "assets/photos/06-smile.png", caption: "比心的瞬间" },
   ];
 
