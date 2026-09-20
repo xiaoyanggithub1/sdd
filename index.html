@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
   <meta name="theme-color" content="#F4A7B9" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -170,6 +171,7 @@
   </main>
 
   <aside class="player" id="player">
+    <audio id="bgm" playsinline webkit-playsinline preload="none" loop></audio>
     <div class="player-ui" id="player-ui">
       <button type="button" class="player-art" id="player-toggle" aria-label="播放或暂停">
         <span class="vinyl"></span>
@@ -184,6 +186,12 @@
       </div>
     </div>
     <div class="netease-wrap" id="player-embed" hidden></div>
+    <p class="player-hint" id="player-hint" hidden>
+      苹果手机请再点一次 ▶。若仍没有声音，
+      <a href="https://music.163.com/song?id=1989506149" target="_blank" rel="noopener">去网易云听完整版</a>
+      或
+      <a href="https://music.apple.com/cn/song/%E6%9C%80%E5%A5%BD%E7%9A%84%E6%97%B6%E5%85%89/1643653875" target="_blank" rel="noopener">用 Apple Music 打开</a>
+    </p>
   </aside>
 
   <nav class="tabbar" aria-label="移动端导航">

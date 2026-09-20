@@ -406,16 +406,78 @@
 
   /* ---------- background music ---------- */
   const NETEASE_ID = "1989506149";
+  const AUDIO_URL = `https://music.163.com/song/media/outer/url?id=${NETEASE_ID}.mp3`;
+  const audio = $("#bgm");
+  const isApple = /iP(hone|ad|od)/i.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+  const setPlaying = (on) => {
+    $("#player").classList.toggle("playing", on);
+    $("#play-song").textContent = on ? "⏸" : "▶";
+  };
+
+  const showHint = () => {
+    $("#player-hint").hidden = false;
+    $("#player").classList.add("show-hint");
+  };
 
   const showNeteaseEmbed = () => {
     const box = $("#player-embed");
     if (box.querySelector("iframe")) return;
     box.hidden = false;
     $("#player").classList.add("embed-mode", "playing");
-    box.innerHTML = `<iframe title="最好的时光 安溥 完整版" allow="autoplay" src="https://music.163.com/outchain/player?type=2&id=${NETEASE_ID}&auto=1&height=66"></iframe>`;
+    box.innerHTML = `<iframe title="最好的时光 安溥 完整版" allow="autoplay; encrypted-media" src="https://music.163.com/outchain/player?type=2&id=${NETEASE_ID}&auto=1&height=66"></iframe>`;
   };
 
-  $("#play-song").addEventListener("click", showNeteaseEmbed);
-  $("#player-toggle").addEventListener("click", showNeteaseEmbed);
-  $("#open-gate").addEventListener("click", showNeteaseEmbed);
+  const playHtmlAudio = () => {
+    if (!audio.getAttribute("src")) {
+      audio.src = AUDIO_URL;
+    }
+    const attempt = audio.play();
+    if (attempt && attempt.then) {
+      attempt.then(() => setPlaying(true)).catch(() => {
+        setPlaying(false);
+        showHint();
+      });
+    } else {
+      setPlaying(!audio.paused);
+    }
+  };
+
+  const startMusic = () => {
+    if (isApple) playHtmlAudio();
+    else showNeteaseEmbed();
+  };
+
+  const toggleMusic = () => {
+    if (isApple) {
+      if (audio.src && !audio.paused) {
+        audio.pause();
+        setPlaying(false);
+      } else {
+        playHtmlAudio();
+      }
+      return;
+    }
+    if ($("#player-embed").querySelector("iframe")) return;
+    startMusic();
+  };
+
+  audio.addEventListener("playing", () => setPlaying(true));
+  audio.addEventListener("pause", () => {
+    if (!audio.ended) setPlaying(false);
+  });
+  audio.addEventListener("timeupdate", () => {
+    if (!audio.duration) return;
+    $("#seek").value = Math.floor((audio.currentTime / audio.duration) * 1000);
+  });
+  audio.addEventListener("error", showHint);
+  $("#seek").addEventListener("input", (e) => {
+    if (!audio.duration) return;
+    audio.currentTime = (Number(e.target.value) / 1000) * audio.duration;
+  });
+
+  $("#play-song").addEventListener("click", toggleMusic);
+  $("#player-toggle").addEventListener("click", toggleMusic);
+  $("#open-gate").addEventListener("click", startMusic);
 })();
