@@ -475,6 +475,25 @@ main {
   height: 36px;
 }
 .player.embed-mode .player-ui { display: none; }
+.player.show-hint {
+  flex-wrap: wrap;
+}
+.player-hint {
+  flex: 1 0 100%;
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+  text-align: center;
+}
+.player-hint a { color: var(--rose-deep); }
+#bgm {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
 .netease-wrap {
   width: 100%;
   border-radius: 14px;
