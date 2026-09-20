@@ -17,7 +17,7 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; min-height: 100%; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
 
 body {
   font-family: "Noto Sans SC", sans-serif;
@@ -187,10 +187,10 @@ main {
   to { opacity: 1; transform: none; }
 }
 
-.hero { text-align: center; padding: 18px 0 8px; }
+.hero { text-align: center; padding: 28px 0 8px; }
 .hero-frame {
-  width: 168px;
-  height: 168px;
+  width: 140px;
+  height: 140px;
   margin: 0 auto 16px;
   padding: 8px;
   border-radius: 50%;
@@ -276,7 +276,7 @@ main {
 .page-head p { color: var(--muted); }
 
 .photo-toolbar { display: flex; justify-content: center; margin-bottom: 16px; }
-.polaroid-wall { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+.polaroid-wall { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
 .polaroid {
   background: #fffefb;
   padding: 12px 12px 42px;
@@ -330,6 +330,12 @@ main {
   outline: none;
 }
 .pretty-form textarea { resize: vertical; }
+.pretty-form .btn-heart,
+.pretty-form .btn-ghost {
+  justify-self: center;
+  min-width: 180px;
+  width: auto;
+}
 
 .countdown-hero {
   padding: 22px;
@@ -378,7 +384,7 @@ main {
 
 .cycle-summary { padding: 18px; text-align: center; margin-bottom: 16px; }
 .cycle-summary strong { display: block; font-size: 28px; font-family: "ZCOOL XiaoWei", serif; margin: 6px 0; }
-.calendar-wrap { padding: 16px; }
+.calendar-wrap { padding: 16px; max-width: 520px; margin: 0 auto 16px; }
 .calendar-nav { display: flex; align-items: center; justify-content: space-between; }
 .calendar-nav button {
   width: 36px; height: 36px; border-radius: 50%;
@@ -391,13 +397,13 @@ main {
   margin-top: 12px;
 }
 .calendar .dow, .calendar button {
-  aspect-ratio: 1;
   display: grid;
   place-items: center;
   border: 0;
   background: transparent;
   border-radius: 12px;
   font-size: 13px;
+  height: 42px;
 }
 .calendar .dow { color: var(--muted); font-size: 12px; }
 .calendar button.period { background: #f4a7b9; color: #fff; }
@@ -485,10 +491,16 @@ main {
   border-radius: 12px;
 }
 
+body.lightbox-open .player,
+body.lightbox-open .tabbar {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .lightbox {
   position: fixed;
   inset: 0;
-  z-index: 90;
+  z-index: 200;
   background: rgba(58, 36, 44, 0.72);
   display: grid;
   place-items: center;
@@ -524,11 +536,23 @@ main {
 .lightbox-nav.prev { left: 12px; }
 .lightbox-nav.next { right: 12px; }
 
+@media (max-width: 767px) {
+  .player {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+  .player-art { width: 40px; height: 40px; }
+  .player-controls button { width: 28px; height: 28px; font-size: 14px; }
+  .polaroid { padding: 8px 8px 36px; }
+  .polaroid figcaption { font-size: 16px; bottom: 8px; }
+}
+
 @media (min-width: 768px) {
   .tabbar { display: none; }
   .top-nav { display: flex; }
+  .hero-frame { width: 168px; height: 168px; }
   .player { left: 24px; right: 24px; bottom: 18px; width: min(720px, calc(100% - 48px)); margin: 0 auto; }
-  main { padding-bottom: calc(var(--player-h) + 48px); }
+  main { padding-bottom: calc(var(--player-h) + 72px); }
   .home-grid { grid-template-columns: 1.2fr .8fr; }
   .shortcut-grid { grid-template-columns: repeat(4, 1fr); }
   .polaroid-wall { grid-template-columns: repeat(3, 1fr); }

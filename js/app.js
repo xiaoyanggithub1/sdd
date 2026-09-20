@@ -130,9 +130,11 @@
     $("#lightbox-img").alt = item.caption;
     $("#lightbox-cap").textContent = item.caption;
     lightbox.hidden = false;
+    document.body.classList.add("lightbox-open");
   };
   const closeLight = () => {
     lightbox.hidden = true;
+    document.body.classList.remove("lightbox-open");
   };
 
   $("#polaroid-wall").addEventListener("click", (e) => {
