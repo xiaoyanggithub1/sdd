@@ -405,53 +405,17 @@
   renderCycle();
 
   /* ---------- background music ---------- */
-  const NETEASE_ID = "25730757";
-  const NETEASE_URL = `https://music.163.com/song/media/outer/url?id=${NETEASE_ID}.mp3`;
-  const audio = $("#bgm");
-  audio.volume = 0.72;
-
-  const setPlaying = (on) => {
-    $("#player").classList.toggle("playing", on);
-    $("#play-song").textContent = on ? "⏸" : "▶";
-  };
+  const NETEASE_ID = "1989506149";
 
   const showNeteaseEmbed = () => {
     const box = $("#player-embed");
-    if (!box.hidden && box.querySelector("iframe")) return;
+    if (box.querySelector("iframe")) return;
     box.hidden = false;
-    $("#player").classList.add("embed-mode");
-    box.innerHTML = `<iframe title="稳稳的幸福 陈奕迅" allow="autoplay" src="https://music.163.com/outchain/player?type=2&id=${NETEASE_ID}&auto=1&height=66"></iframe>`;
+    $("#player").classList.add("embed-mode", "playing");
+    box.innerHTML = `<iframe title="最好的时光 安溥 完整版" allow="autoplay" src="https://music.163.com/outchain/player?type=2&id=${NETEASE_ID}&auto=1&height=66"></iframe>`;
   };
 
-  const playBgm = async () => {
-    if (!audio.getAttribute("src")) audio.src = NETEASE_URL;
-    try {
-      await audio.play();
-      setPlaying(true);
-    } catch {
-      showNeteaseEmbed();
-    }
-  };
-
-  audio.addEventListener("playing", () => setPlaying(true));
-  audio.addEventListener("pause", () => {
-    if (!audio.ended) setPlaying(false);
-  });
-  audio.addEventListener("timeupdate", () => {
-    if (!audio.duration) return;
-    $("#seek").value = Math.floor((audio.currentTime / audio.duration) * 1000);
-  });
-  audio.addEventListener("error", showNeteaseEmbed);
-  audio.addEventListener("error", showNeteaseEmbed);
-
-  $("#play-song").addEventListener("click", () => {
-    if (audio.paused) playBgm();
-    else audio.pause();
-  });
-  $("#player-toggle").addEventListener("click", () => $("#play-song").click());
-  $("#seek").addEventListener("input", (e) => {
-    if (!audio.duration) return;
-    audio.currentTime = (Number(e.target.value) / 1000) * audio.duration;
-  });
-  $("#open-gate").addEventListener("click", () => playBgm());
+  $("#play-song").addEventListener("click", showNeteaseEmbed);
+  $("#player-toggle").addEventListener("click", showNeteaseEmbed);
+  $("#open-gate").addEventListener("click", showNeteaseEmbed);
 })();
