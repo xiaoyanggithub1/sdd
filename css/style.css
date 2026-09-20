@@ -436,6 +436,14 @@ main {
   backdrop-filter: blur(12px);
 }
 
+.player-ui {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
 .player-art {
   width: 48px;
   height: 48px;
@@ -459,13 +467,25 @@ main {
 .player-meta strong, .player-meta small { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .player-meta small { color: var(--muted); font-size: 12px; }
 .player-meta input[type="range"] { width: 100%; accent-color: var(--rose-deep); }
-.player-controls { display: flex; gap: 4px; }
 .player-controls button {
   border: 0;
   background: transparent;
-  font-size: 16px;
-  width: 32px;
-  height: 32px;
+  font-size: 18px;
+  width: 36px;
+  height: 36px;
+}
+.player.embed-mode .player-ui { display: none; }
+.netease-wrap {
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+}
+.netease-wrap iframe {
+  display: block;
+  width: 100%;
+  height: 86px;
+  border: 0;
 }
 
 .tabbar {

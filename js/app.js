@@ -404,182 +404,54 @@
   });
   renderCycle();
 
-  /* ---------- music box ---------- */
-  const SONGS = [
-    {
-      title: "奶油小夜曲",
-      bpm: 76,
-      notes: [
-        [0, 60, 0.6], [0.75, 64, 0.6], [1.5, 67, 0.9],
-        [2.5, 64, 0.5], [3, 69, 0.8], [4, 67, 0.8],
-        [5, 65, 0.6], [5.75, 64, 0.6], [6.5, 62, 0.9],
-        [7.5, 60, 1.2], [9, 67, 0.5], [9.5, 69, 0.5], [10, 71, 1],
-        [11.25, 69, 0.6], [12, 67, 1.2], [13.5, 64, 0.6], [14.25, 67, 0.6],
-        [15, 65, 0.8], [16, 64, 0.8], [17, 62, 1.4], [19, 60, 1.8],
-      ],
-    },
-    {
-      title: "粉色日记",
-      bpm: 88,
-      notes: [
-        [0, 76, 0.4], [0.5, 74, 0.4], [1, 72, 0.6], [1.75, 74, 0.4],
-        [2.25, 76, 0.4], [2.75, 79, 0.8], [3.75, 76, 0.6],
-        [4.5, 72, 0.5], [5.1, 69, 0.5], [5.7, 67, 1],
-        [7, 67, 0.4], [7.5, 69, 0.4], [8, 72, 0.6], [8.75, 74, 0.8],
-        [9.75, 72, 0.5], [10.4, 69, 0.5], [11, 67, 1.2],
-        [12.5, 64, 0.5], [13.1, 67, 0.5], [13.7, 69, 0.8], [14.7, 67, 1.4],
-      ],
-    },
-    {
-      title: "给多多",
-      bpm: 70,
-      notes: [
-        [0, 64, 0.7], [1, 67, 0.7], [2, 71, 1], [3.2, 69, 0.6],
-        [4, 67, 0.8], [5, 64, 1], [6.3, 62, 0.6], [7, 64, 1.2],
-        [8.5, 67, 0.5], [9.1, 69, 0.5], [9.7, 71, 0.8], [10.7, 74, 1],
-        [12, 71, 0.6], [12.8, 69, 0.6], [13.6, 67, 1.4], [15.2, 64, 1.8],
-      ],
-    },
-    {
-      title: "月光信笺",
-      bpm: 64,
-      notes: [
-        [0, 57, 1], [1, 64, 1], [2, 69, 1], [3, 64, 1],
-        [4, 55, 1], [5, 62, 1], [6, 67, 1], [7, 62, 1],
-        [8, 53, 1], [9, 60, 1], [10, 65, 1], [11, 60, 1],
-        [12, 55, 1], [13, 62, 1], [14, 59, 1], [15, 55, 1.4],
-        [17, 57, 1.8],
-      ],
-    },
-  ];
+  /* ---------- background music ---------- */
+  const NETEASE_ID = "25730757";
+  const NETEASE_URL = `https://music.163.com/song/media/outer/url?id=${NETEASE_ID}.mp3`;
+  const audio = $("#bgm");
+  audio.volume = 0.72;
 
-  let audioCtx = null;
-  let songIndex = 0;
-  let playing = false;
-  let startAt = 0;
-  let pauseElapsed = 0;
-  let timer = 0;
-  let activeNodes = [];
-
-  const midiToFreq = (m) => 440 * Math.pow(2, (m - 69) / 12);
-  const songDuration = (song) => {
-    const last = song.notes[song.notes.length - 1];
-    return ((last[0] + last[2] + 1) * 60) / song.bpm;
+  const setPlaying = (on) => {
+    $("#player").classList.toggle("playing", on);
+    $("#play-song").textContent = on ? "⏸" : "▶";
   };
 
-  const ensureCtx = () => {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    return audioCtx;
+  const showNeteaseEmbed = () => {
+    const box = $("#player-embed");
+    if (!box.hidden && box.querySelector("iframe")) return;
+    box.hidden = false;
+    $("#player").classList.add("embed-mode");
+    box.innerHTML = `<iframe title="稳稳的幸福 陈奕迅" allow="autoplay" src="https://music.163.com/outchain/player?type=2&id=${NETEASE_ID}&auto=1&height=66"></iframe>`;
   };
 
-  const stopNodes = () => {
-    activeNodes.forEach((n) => {
-      try { n.stop(); } catch {}
-    });
-    activeNodes = [];
-  };
-
-  const playSong = (fromElapsed = 0) => {
-    const ctx = ensureCtx();
-    stopNodes();
-    const song = SONGS[songIndex];
-    const beat = 60 / song.bpm;
-    startAt = ctx.currentTime - fromElapsed;
-    song.notes.forEach(([beatPos, midi, durBeats]) => {
-      const when = startAt + beatPos * beat;
-      const dur = durBeats * beat;
-      if (when + dur < ctx.currentTime) return;
-      const osc = ctx.createOscillator();
-      const osc2 = ctx.createOscillator();
-      const gain = ctx.createGain();
-      const filter = ctx.createBiquadFilter();
-      osc.type = "sine";
-      osc2.type = "triangle";
-      osc.frequency.value = midiToFreq(midi);
-      osc2.frequency.value = midiToFreq(midi);
-      filter.type = "lowpass";
-      filter.frequency.value = 1800;
-      const g = 0.07;
-      const t0 = Math.max(when, ctx.currentTime);
-      gain.gain.setValueAtTime(0, t0);
-      gain.gain.linearRampToValueAtTime(g, t0 + 0.03);
-      gain.gain.exponentialRampToValueAtTime(0.0001, when + dur);
-      osc.connect(filter);
-      osc2.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(t0);
-      osc2.start(t0);
-      osc.stop(when + dur + 0.05);
-      osc2.stop(when + dur + 0.05);
-      activeNodes.push(osc, osc2);
-    });
-    playing = true;
-    $("#player").classList.add("playing");
-    $("#play-song").textContent = "⏸";
-    $("#song-title").textContent = song.title;
-    tickProgress();
-  };
-
-  const pauseSong = () => {
-    if (!audioCtx) return;
-    pauseElapsed = audioCtx.currentTime - startAt;
-    stopNodes();
-    playing = false;
-    $("#player").classList.remove("playing");
-    $("#play-song").textContent = "▶";
-    clearTimeout(timer);
-  };
-
-  const tickProgress = () => {
-    clearTimeout(timer);
-    if (!playing || !audioCtx) return;
-    const song = SONGS[songIndex];
-    const dur = songDuration(song);
-    const elapsed = audioCtx.currentTime - startAt;
-    $("#seek").value = Math.min(1000, Math.floor((elapsed / dur) * 1000));
-    if (elapsed >= dur) {
-      nextSong();
-      return;
+  const playBgm = async () => {
+    if (!audio.getAttribute("src")) audio.src = NETEASE_URL;
+    try {
+      await audio.play();
+      setPlaying(true);
+    } catch {
+      showNeteaseEmbed();
     }
-    timer = setTimeout(tickProgress, 120);
   };
 
-  const nextSong = () => {
-    songIndex = (songIndex + 1) % SONGS.length;
-    pauseElapsed = 0;
-    playSong(0);
-  };
-  const prevSong = () => {
-    songIndex = (songIndex - 1 + SONGS.length) % SONGS.length;
-    pauseElapsed = 0;
-    playSong(0);
-  };
+  audio.addEventListener("playing", () => setPlaying(true));
+  audio.addEventListener("pause", () => {
+    if (!audio.ended) setPlaying(false);
+  });
+  audio.addEventListener("timeupdate", () => {
+    if (!audio.duration) return;
+    $("#seek").value = Math.floor((audio.currentTime / audio.duration) * 1000);
+  });
+  audio.addEventListener("error", showNeteaseEmbed);
+  audio.addEventListener("error", showNeteaseEmbed);
 
-  $("#play-song").addEventListener("click", async () => {
-    const ctx = ensureCtx();
-    if (ctx.state === "suspended") await ctx.resume();
-    if (playing) pauseSong();
-    else playSong(pauseElapsed);
+  $("#play-song").addEventListener("click", () => {
+    if (audio.paused) playBgm();
+    else audio.pause();
   });
   $("#player-toggle").addEventListener("click", () => $("#play-song").click());
-  $("#next-song").addEventListener("click", async () => {
-    const ctx = ensureCtx();
-    if (ctx.state === "suspended") await ctx.resume();
-    nextSong();
-  });
-  $("#prev-song").addEventListener("click", async () => {
-    const ctx = ensureCtx();
-    if (ctx.state === "suspended") await ctx.resume();
-    prevSong();
-  });
   $("#seek").addEventListener("input", (e) => {
-    const song = SONGS[songIndex];
-    pauseElapsed = (Number(e.target.value) / 1000) * songDuration(song);
-    if (playing) playSong(pauseElapsed);
+    if (!audio.duration) return;
+    audio.currentTime = (Number(e.target.value) / 1000) * audio.duration;
   });
-  $("#song-title").textContent = SONGS[0].title;
-  $("#open-gate").addEventListener("click", () => {
-    if (!playing) $("#play-song").click();
-  });
+  $("#open-gate").addEventListener("click", () => playBgm());
 })();
