@@ -170,19 +170,21 @@
   </main>
 
   <aside class="player" id="player">
-    <button type="button" class="player-art" id="player-toggle" aria-label="播放或暂停">
-      <span class="vinyl"></span>
-    </button>
-    <div class="player-meta">
-      <strong id="song-title">奶油小夜曲</strong>
-      <small>给三多多的音乐盒</small>
-      <input type="range" id="seek" min="0" max="1000" value="0" aria-label="进度" />
+    <audio id="bgm" loop playsinline preload="none"></audio>
+    <div class="player-ui" id="player-ui">
+      <button type="button" class="player-art" id="player-toggle" aria-label="播放或暂停">
+        <span class="vinyl"></span>
+      </button>
+      <div class="player-meta">
+        <strong id="song-title">稳稳的幸福</strong>
+        <small>陈奕迅</small>
+        <input type="range" id="seek" min="0" max="1000" value="0" aria-label="进度" />
+      </div>
+      <div class="player-controls">
+        <button type="button" id="play-song" aria-label="播放">▶</button>
+      </div>
     </div>
-    <div class="player-controls">
-      <button type="button" id="prev-song" aria-label="上一首">⏮</button>
-      <button type="button" id="play-song" aria-label="播放">▶</button>
-      <button type="button" id="next-song" aria-label="下一首">⏭</button>
-    </div>
+    <div class="netease-wrap" id="player-embed" hidden></div>
   </aside>
 
   <nav class="tabbar" aria-label="移动端导航">
