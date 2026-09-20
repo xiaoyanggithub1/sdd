@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#F4A7B9" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="description" content="写给三多多的专属小站：拍立得相册、纪念日、留言板、音乐盒与温柔的日常。" />
+  <title>三多多的小站</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/photos/01-winter.png" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;500;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="petal-layer" aria-hidden="true"></div>
+
+  <div id="gate" class="gate">
+    <div class="gate-card">
+      <img class="gate-avatar" src="assets/photos/01-winter.png" alt="三多多" />
+      <p class="gate-kicker">只写给一个人</p>
+      <h1 class="gate-title">三多多的小站</h1>
+      <p class="gate-copy">把喜欢的瞬间收进拍立得里，<br />把想说的话，轻轻放在这里。</p>
+      <button type="button" class="btn-heart" id="open-gate">轻轻打开</button>
+    </div>
+  </div>
+
+  <header class="topbar">
+    <button type="button" class="brand" data-go="home" aria-label="回到首页">
+      <img src="assets/photos/01-winter.png" alt="" />
+      <span>
+        <strong>三多多</strong>
+        <small>专属小宇宙</small>
+      </span>
+    </button>
+    <nav class="top-nav" aria-label="主导航">
+      <button type="button" data-go="home">首页</button>
+      <button type="button" data-go="photos">相册</button>
+      <button type="button" data-go="days">纪念日</button>
+      <button type="button" data-go="notes">留言</button>
+      <button type="button" data-go="cycle">经期</button>
+    </nav>
+  </header>
+
+  <main id="app">
+    <section id="page-home" class="page active" data-page="home">
+      <div class="hero">
+        <div class="hero-frame">
+          <img src="assets/photos/01-winter.png" alt="三多多的头像" />
+        </div>
+        <p class="kicker" id="greeting">晚上好呀</p>
+        <h1 class="display">写给三多多</h1>
+        <p class="lead">奶油一样的日子，粉色一样的心情。<br />这里是只属于你的温柔角落。</p>
+        <p class="today-word" id="today-word"></p>
+      </div>
+
+      <div class="home-grid">
+        <article class="letter-card">
+          <h2>一封信</h2>
+          <p>多多：</p>
+          <p>做这个小站的时候，我一直在想你的样子。想把那些好看的瞬间收进拍立得里，把想对你说的话，一张一张叠好，放在这里。</p>
+          <p>愿你被世界温柔以待，也愿我能成为那份温柔的一部分。</p>
+          <p class="sign">—— 只写给你</p>
+        </article>
+        <article class="stack-card">
+          <h2>最近的你</h2>
+          <div class="mini-stack" id="mini-stack"></div>
+          <button type="button" class="text-link" data-go="photos">去拍立得相册看看 →</button>
+        </article>
+      </div>
+
+      <div class="shortcut-grid">
+        <button type="button" class="shortcut" data-go="photos">
+          <span>📷</span>
+          <strong>拍立得相册</strong>
+          <small>把瞬间轻轻夹起来</small>
+        </button>
+        <button type="button" class="shortcut" data-go="days">
+          <span>🎀</span>
+          <strong>纪念日</strong>
+          <small>值得被记住的日子</small>
+        </button>
+        <button type="button" class="shortcut" data-go="notes">
+          <span>✉️</span>
+          <strong>留言板</strong>
+          <small>想说的话写在这里</small>
+        </button>
+        <button type="button" class="shortcut" data-go="cycle">
+          <span>🌸</span>
+          <strong>经期记录</strong>
+          <small>温柔地照顾自己</small>
+        </button>
+      </div>
+    </section>
+
+    <section id="page-photos" class="page" data-page="photos">
+      <div class="page-head">
+        <h1>拍立得相册</h1>
+        <p>轻轻点开，就能把这一帧放大看清。</p>
+      </div>
+      <div class="photo-toolbar">
+        <label class="btn-ghost file-btn">
+          加入新照片
+          <input type="file" id="photo-input" accept="image/*" multiple hidden />
+        </label>
+      </div>
+      <div class="polaroid-wall" id="polaroid-wall"></div>
+    </section>
+
+    <section id="page-days" class="page" data-page="days">
+      <div class="page-head">
+        <h1>纪念日</h1>
+        <p>那些想和你一起数的日子，都放在这里。</p>
+      </div>
+      <div class="countdown-hero" id="countdown-hero"></div>
+      <form class="pretty-form" id="day-form">
+        <label>名字<input name="title" required maxlength="24" placeholder="例如：第一次见面" /></label>
+        <label>日期<input name="date" type="date" required /></label>
+        <label>小笔记<input name="note" maxlength="80" placeholder="一句想记住的话" /></label>
+        <button type="submit" class="btn-heart">收下这一天</button>
+      </form>
+      <div class="day-list" id="day-list"></div>
+    </section>
+
+    <section id="page-notes" class="page" data-page="notes">
+      <div class="page-head">
+        <h1>留言板</h1>
+        <p>像把信封塞进抽屉，下次打开还在。</p>
+      </div>
+      <form class="pretty-form" id="note-form">
+        <label>署名<input name="author" maxlength="16" placeholder="我" /></label>
+        <label>想说的话<textarea name="text" required maxlength="240" rows="3" placeholder="今天也想对多多说……"></textarea></label>
+        <button type="submit" class="btn-heart">放进信封</button>
+      </form>
+      <div class="note-wall" id="note-wall"></div>
+    </section>
+
+    <section id="page-cycle" class="page" data-page="cycle">
+      <div class="page-head">
+        <h1>经期记录</h1>
+        <p>这些记录只存在这台设备上，不离开你身边。</p>
+      </div>
+      <div class="cycle-summary" id="cycle-summary"></div>
+      <div class="calendar-wrap">
+        <div class="calendar-nav">
+          <button type="button" id="cal-prev" aria-label="上个月">‹</button>
+          <h2 id="cal-title"></h2>
+          <button type="button" id="cal-next" aria-label="下个月">›</button>
+        </div>
+        <div class="calendar" id="calendar"></div>
+        <div class="legend">
+          <span><i class="dot period"></i>经期</span>
+          <span><i class="dot predict"></i>预测</span>
+          <span><i class="dot fertile"></i>易孕期</span>
+          <span><i class="dot today"></i>今天</span>
+        </div>
+      </div>
+      <form class="pretty-form cycle-settings" id="cycle-form">
+        <label>周期天数<input name="cycleLength" type="number" min="20" max="45" /></label>
+        <label>经期天数<input name="periodLength" type="number" min="2" max="10" /></label>
+        <button type="submit" class="btn-ghost">保存设置</button>
+      </form>
+      <p class="hint" id="cycle-hint">点选日期：第一次点标记经期开始，再点可取消。</p>
+    </section>
+  </main>
+
+  <aside class="player" id="player">
+    <button type="button" class="player-art" id="player-toggle" aria-label="播放或暂停">
+      <span class="vinyl"></span>
+    </button>
+    <div class="player-meta">
+      <strong id="song-title">奶油小夜曲</strong>
+      <small>给三多多的音乐盒</small>
+      <input type="range" id="seek" min="0" max="1000" value="0" aria-label="进度" />
+    </div>
+    <div class="player-controls">
+      <button type="button" id="prev-song" aria-label="上一首">⏮</button>
+      <button type="button" id="play-song" aria-label="播放">▶</button>
+      <button type="button" id="next-song" aria-label="下一首">⏭</button>
+    </div>
+  </aside>
+
+  <nav class="tabbar" aria-label="移动端导航">
+    <button type="button" data-go="home">首页</button>
+    <button type="button" data-go="photos">相册</button>
+    <button type="button" data-go="days">纪念日</button>
+    <button type="button" data-go="notes">留言</button>
+    <button type="button" data-go="cycle">经期</button>
+  </nav>
+
+  <div class="lightbox" id="lightbox" hidden>
+    <button type="button" class="lightbox-close" id="lightbox-close" aria-label="关闭">×</button>
+    <button type="button" class="lightbox-nav prev" id="lightbox-prev" aria-label="上一张">‹</button>
+    <figure>
+      <img id="lightbox-img" alt="" />
+      <figcaption id="lightbox-cap"></figcaption>
+    </figure>
+    <button type="button" class="lightbox-nav next" id="lightbox-next" aria-label="下一张">›</button>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
