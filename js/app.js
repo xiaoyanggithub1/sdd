@@ -405,14 +405,14 @@
   renderCycle();
 
   /* ---------- background music ---------- */
-  const NETEASE_ID = "559735234";
+  const NETEASE_ID = "1989506149";
 
   const showNeteaseEmbed = () => {
     const box = $("#player-embed");
     if (box.querySelector("iframe")) return;
     box.hidden = false;
     $("#player").classList.add("embed-mode", "playing");
-    box.innerHTML = `<iframe title="最好的时光 汪小敏 完整版" allow="autoplay" src="https://music.163.com/outchain/player?type=2&id=${NETEASE_ID}&auto=1&height=66"></iframe>`;
+    box.innerHTML = `<iframe title="最好的时光 安溥 完整版" allow="autoplay" src="https://music.163.com/outchain/player?type=2&id=${NETEASE_ID}&auto=1&height=66"></iframe>`;
   };
 
   $("#play-song").addEventListener("click", showNeteaseEmbed);
