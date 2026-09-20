@@ -4,21 +4,21 @@
 
 ## 一键访问
 
-合并到 `main` 并开启 GitHub Pages 后，地址是：
+合并到 `main` 后，打开仓库 **Settings → Pages**：
+
+1. Source 选 **Deploy from a branch**
+2. Branch 选 **main**，文件夹选 **/ (root)**
+3. 保存大约一分钟后打开：
 
 **https://xiaoyanggithub1.github.io/sdd/**
 
-仓库 Settings → Pages → Source 选择 **GitHub Actions**，推送到 `main` 就会自动发布。
+把这个链接发给三多多即可。手机浏览器也可以「添加到主屏幕」，像小应用一样点开。仓库需要是公开的，她才能不用登录直接打开。
 
 本机也可以直接打开 `index.html`，或在项目目录运行：
 
 ```bash
 python3 -m http.server 8080
 ```
-
-然后访问 http://localhost:8080
-
-手机可把网站「添加到主屏幕」，像小应用一样点开。
 
 ## 里面有什么
 
